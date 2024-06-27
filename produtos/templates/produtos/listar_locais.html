@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Lista de Locais</h2>
+        <a href="{% url 'adicionar_local' %}" class="btn btn-success">Adicionar Local</a>
+    </div>
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="q" class="form-control" placeholder="Pesquisar por nome" value="{{ request.GET.q }}">
+            </div>
+            <div class="col-md-4">
+                <select name="tipo" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="F" {% if request.GET.tipo == "F" %}selected{% endif %}>Físico</option>
+                    <option value="D" {% if request.GET.tipo == "D" %}selected{% endif %}>Digital</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for local in locais %}
+                <tr>
+                    <td>{{ local.nome }}</td>
+                    <td>{{ local.tipo }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'editar_local' local.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'excluir_local' local.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
